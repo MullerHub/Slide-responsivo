@@ -8,6 +8,10 @@ class UserController {
 
     const usersRepository = getRepository(User)
 
+    const userAlreadyExists = await usersRepository.findOne({
+      email,
+    })
+
     const user = usersRepository.create({
       name,
       email,
