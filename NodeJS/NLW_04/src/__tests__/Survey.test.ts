@@ -10,6 +10,11 @@ describe('Surveys', () => {
     await connection.runMigrations()
   })
 
+  afterEach(async () => {
+    const connection = getConnection()
+    await connection.query('DELETE  FROM SURVEYS')
+  })
+
   afterAll(async () => {
     const connection = getConnection()
     await connection.dropDatabase()
@@ -26,14 +31,19 @@ describe('Surveys', () => {
     expect(response.body).toHaveProperty('id')
   })
 
-  it("Should be able to get all surveys", async () => {
-     await request(app).post('/surveys').send({
-      title: "Title Example",
-      description: 'Description Example'
-  }),
-  
-  const response = await request(app).get('/surveys')
-  
-  expect(response.body.length).toBe(2)
-})
+  it('Should be able to get all surveys', async () => {
+    await request(app).post('/surveys').send({
+      title: 'Title Example',
+      description: 'Description Example',
+    })
+
+    await request(app).post('/surveys').send({
+      title: 'Title Example2',
+      description: 'Description Example2',
+    })
+
+    const response = await request(app).get('/surveys')
+
+    expect(response.body.length).toBe(2)
+  })
 })
