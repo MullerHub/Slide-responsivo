@@ -9,7 +9,7 @@ class UserController {
     const usersRepository = getRepository(User)
 
     const userAlreadyExists = await usersRepository.findOne({
-      email,
+      // email,   está dando erro por falta do script migration:run (erro na minha maquina)
     })
 
     const user = usersRepository.create({
@@ -19,7 +19,7 @@ class UserController {
 
     await usersRepository.save(user)
 
-    return response.json(user)
+    return response.status(201).json(user)
 
     //    return response.send()
   }
